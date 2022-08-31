@@ -26,21 +26,24 @@
 
 * Запуск проэкта:
     - Находясь в репозитории "infra_sp2" запустить команду
-        - sudo infra/docker-compose up -d --build
-    - После чего контейнеры будут собраны и запущены.
-     Вместе с этим будет произведена миграция баз данных.
-     Также, будет создан суперпользователь(username=admin, password=10101), что бы изменить данные пользователя для этого перед запуском docker-compose, отредактируйте файл "./api_yamdb/.admin_data.env".
-     Каждый раз меняя данные и запуская docker-compose, будет создаваться новый пользователь.
-     Вы можете удалить ".admin_data.env" и тогда после запуска docker-compose для создания суперпользователя выполните следующие команды:
+        - sudo infra/docker-compose up -d --build (После чего контейнеры будут собраны и запущены.)
+     
+    - Для входа в контейнер выполните следующие команд:
         - sudo docker container ls (узнайте id контейнера "web")
         - sudo docker exec -it <id_контейнера> bash (команда для входа в контейнер)
-        - python manage.py createsuperuser
     
-    - по адресу http://localhost/admin/ будет доступна панель администратора. 
-    - по адресу http://localhost/redoc/ будет доступна документация проекта.
+    - Что бы выполнить миграции, создать суперпользователя и собрать статику выполните ниже описаные команды находясь внутри контейнера:
+        - python manage.py migrate
+        - python manage.py createsuperuser
+        - python manage.py collectstatic --no-input
+    
     - для создания резервной копии выполните следующие команды:
         - sudo docker exec -it <id_контейнера> bash
         - python manage.py dumpdata > fixtures.json
+
+
+    - по адресу http://localhost/admin/ будет доступна панель администратора. 
+    - по адресу http://localhost/redoc/ будет доступна документация проекта.
 
 #### Автор
     Марчиладзе Г. Д.
